@@ -1,0 +1,7 @@
+!.gitignore
+/cmake-build-debug
+/include
+/lib
+
+/src/test/googletest
+/.idea
