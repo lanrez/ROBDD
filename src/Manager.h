@@ -17,7 +17,18 @@
 
 namespace ClassProject {
 
-    class Manager :public ManagerInterface{
+  struct ArrayHasher{
+    size_t operator() (const std::array<BDD_ID,3> &a) const{
+      size_t h = 0;
+
+      for(auto e: a){
+        h ^= std::hash<BDD_ID>{}(e) + 0x9e3779b9 + (h << 6) + (h >> 2);
+      }
+      return h;
+    }
+  };
+
+  class Manager :public ManagerInterface{
       public:
       Manager();
 
@@ -182,7 +193,8 @@ namespace ClassProject {
 
       std::unordered_map<BDD_ID, std::array<BDD_ID,3>> u_table;
       std::unordered_map<BDD_ID, std::string> var_str;
-      std::map<std::array<BDD_ID,3>, BDD_ID> c_table;
+      std::unordered_map<std::array<BDD_ID,3>, BDD_ID, ArrayHasher> c_table;
+      std::map<std::array<BDD_ID,3>, BDD_ID> c_table2;
 
     };
 

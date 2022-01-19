@@ -84,9 +84,11 @@ BDD_ID Manager::ite(const BDD_ID i, const BDD_ID t, const BDD_ID e) {
 
       for(auto x: u_table) {
         //std::array<BDD_ID, 2> val = {x.second[1], x.second[2]};
-        if(entry == x.second)
-        //if (entry == val)
+        if(entry == x.second) {
+          //if (entry == val)
+          c_table[std::array<BDD_ID,3>{i,t,e}] = x.first;
           return x.first;
+        }
       }
 
       BDD_ID ID = u_table.size() + 1;
