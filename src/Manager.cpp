@@ -3,6 +3,8 @@
 #include "Manager.h"
 
 
+#define DEBUG 1
+
 // Local Variables:
 // mode: c++
 // End:
@@ -19,6 +21,9 @@ BDD_ID Manager::createVar(const std::string &label) {
   BDD_ID ID = u_table.size() + 1;
   u_table[ID] = {ID, False(), True()};
   var_str[ID] = label;
+#if DEBUG
+  std::cout << std::endl << "Create variable " + label + " with ID " << ID;
+#endif
   return ID;
 }
 
@@ -62,12 +67,18 @@ BDD_ID Manager::ite(const BDD_ID i, const BDD_ID t, const BDD_ID e) {
   /*else if(t == False() && e == True())
     return neg(i);*/
   else {
-    /*for(auto x: c_table){
-      if (std::array<BDD_ID,3>{i,t,e} == x.second)
-        return x.first;
-    }*/
-    if (c_table.find(std::array<BDD_ID,3>{i,t,e}) != c_table.end())
-      return c_table[std::array<BDD_ID,3>{i,t,e}];
+    for(auto x: c_table){
+      if (std::array<BDD_ID,3>{i,t,e} == x.second){
+#if DEBUG
+        std::cout << std::endl << "Computed found: " << c_table.size();
+#endif
+        return x.first;}
+    }
+    /*if (c_table.find(std::array<BDD_ID,3>{i,t,e}) != c_table.end()){
+#if DEBUG
+      std::cout << std::endl << "Computed found: " << c_table.size();
+#endif
+      return c_table[std::array<BDD_ID,3>{i,t,e}];}*/
 
     BDD_ID t_var = topVar(i);
     if (topVar(t) < t_var && isVariable(topVar(t)))
@@ -86,13 +97,19 @@ BDD_ID Manager::ite(const BDD_ID i, const BDD_ID t, const BDD_ID e) {
         //std::array<BDD_ID, 2> val = {x.second[1], x.second[2]};
         if(entry == x.second) {
           //if (entry == val)
-          c_table[std::array<BDD_ID,3>{i,t,e}] = x.first;
+          c_table[x.first] = std::array<BDD_ID,3>{i,t,e};
+#if !DEBUG
+          std::cout << std::endl << "Computed table size: " << c_table.size();
+#endif
           return x.first;
         }
       }
 
       BDD_ID ID = u_table.size() + 1;
-      c_table[std::array<BDD_ID,3>{i,t,e}] = ID;
+      c_table[ID] = std::array<BDD_ID,3>{i,t,e};
+#if !DEBUG
+      std::cout << std::endl << "Computed table size: " << c_table.size();
+#endif
       u_table[ID] = entry;
       return ID;
     }
@@ -144,18 +161,30 @@ BDD_ID Manager::coFactorFalse(const BDD_ID f) {
 }
 
 BDD_ID Manager::and2(const BDD_ID a, const BDD_ID b) {
+#if DEBUG
+  std::cout << std::endl << "and(" << a << "," << b << ")";
+#endif
   return ite(a, b,1);
 }
 
 BDD_ID Manager::or2(const BDD_ID a, const BDD_ID b) {
+#if DEBUG
+  std::cout << std::endl << "or(" << a << "," << b << ")";
+#endif
   return ite(a, 2, b);
 }
 
 BDD_ID Manager::xor2(const BDD_ID a, const BDD_ID b) {
+#if DEBUG
+  std::cout << std::endl << "xor(" << a << "," << b << ")";
+#endif
   return ite(a, neg(b), b);
 }
 //todo
 BDD_ID Manager::neg(const BDD_ID a) {
+#if DEBUG
+  std::cout << std::endl << "not(" << a << ")";
+#endif
   return ite(a,False(),True());
   /*if (a == True())
     return False();
@@ -209,7 +238,9 @@ void Manager::findVars(const BDD_ID &root, std::set<BDD_ID> &vars_of_root) {
   for(auto x: nodes){
     vars_of_root.emplace(topVar(x));
   }
-
+#if DEBUG
+  printR_table();
+#endif
 }
 
 size_t Manager::uniqueTableSize() {
@@ -223,5 +254,11 @@ void Manager::printR_table() {
     std::cout << x.first << "\t\t" << x.second[2] << "\t\t" << x.second[1] << "\t\t" << x.second[0] << std::endl;
     //std::cout << x.first << "\t\t" << var_str[x.first] << "\t\t"<< x.second[2] << "\t\t" << x.second[1] << "\t\t" << x.second[0] << std::endl;
   }
+
+  std::cout << "size_u: " << u_table.size() << std::endl;
+  std::cout << "max_bucket_u: " << u_table.bucket_count() << std::endl;
+  std::cout << "size_c: " << c_table.size() << std::endl;
+  std::cout << "max_bucket_c: " << c_table.bucket_count() << std::endl;
+
 }
 

@@ -1,4 +1,5 @@
-
+add_subdirectory(bench)
+add_subdirectory(verify)
 add_subdirectory(test)
 
 

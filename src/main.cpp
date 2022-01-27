@@ -31,10 +31,10 @@ int main(int argc, char* argv[])
   auto cnd = x.and2(c,d);
   auto e = x.and2(aob,cnd);
 
-  /*//auto t1 = x.and2(c,d);
+  auto t1 = x.and2(c,d);
   auto t2 = x.and2(a,b);
   auto t3 = x.or2(t2, cnd);
-  //auto f = x.or2 (x.and2(a,b), x.and2(c,d));
+  auto f = x.or2 (x.and2(a,b), x.and2(c,d));
 
   auto g = x.neg(3);
   auto h = x.neg(4);
@@ -51,11 +51,11 @@ int main(int argc, char* argv[])
   auto m = x.and2(b, b);
 
   auto bnc = x.and2(b,c);
-  auto aobnc = x.or2(a,bnc);*/
+  auto aobnc = x.or2(a,bnc);
   //y = x.coFactorTrue(aobnc,c);
 
   y = x.neg(x.False());
-
+  //std::cout << "Hello" << std::numeric_limits<size_t>::min() <<std::endl;
   std::cout << "y is " << y << std::endl;
 
   x.printR_table();
