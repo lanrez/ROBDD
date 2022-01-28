@@ -212,8 +212,10 @@ namespace ClassProject {
      * Key: ID nodes
      * Values: {i,t,e} triple that results in ID
      */
-      //std::unordered_map<std::array<BDD_ID,3>, BDD_ID, ArrayHasher> c_table;
-      std::unordered_map<BDD_ID, std::array<BDD_ID,3>> c_table;
+      std::unordered_map<std::array<BDD_ID,3>, BDD_ID, ArrayHasher> c_table;
+      //std::unordered_map<BDD_ID, std::array<BDD_ID,3>> c_table;
+      std::unordered_map<std::array<BDD_ID,3>, BDD_ID, ArrayHasher> u_t2;
+
 
     };
 

@@ -14,15 +14,14 @@ void ROBDDTest::SetUp() {
 
 void ROBDDTest::TearDown() {
   x->~Manager();
-  //delete a;
 
 }
 
 TEST_F(ROBDDTest, constructorTest){
   ClassProject::BDD_ID y = x->True();
-  ASSERT_EQ(y,2);
-  y = x->False();
   ASSERT_EQ(y,1);
+  y = x->False();
+  ASSERT_EQ(y,0);
 }
 
 TEST_F(ROBDDTest, constantTest){
@@ -47,13 +46,13 @@ TEST_F(ROBDDTest, and2Test){
   auto r = x->and2(*a,*b);
   ASSERT_EQ(x->topVar(r),*a);
   ASSERT_EQ(x->coFactorTrue(r),*b);
-  ASSERT_EQ(x->coFactorFalse(r),1);
+  ASSERT_EQ(x->coFactorFalse(r),x->False());
 }
 
 TEST_F(ROBDDTest, or2Test){
   auto r = x->or2(*a,*b);
   ASSERT_EQ(x->topVar(r),*a);
-  ASSERT_EQ(x->coFactorTrue(r),2);
+  ASSERT_EQ(x->coFactorTrue(r),x->True());
   ASSERT_EQ(x->coFactorFalse(r),*b);
 }
 
@@ -62,9 +61,9 @@ TEST_F(ROBDDTest, cofactorTest){
   auto rTrue = x->coFactorTrue(r,*c);
   auto rFalse = x->coFactorFalse(r,*c);
   ASSERT_EQ(x->topVar(rTrue),*a);
-  ASSERT_EQ(x->coFactorTrue(rTrue),2);
+  ASSERT_EQ(x->coFactorTrue(rTrue),x->True());
   ASSERT_EQ(x->coFactorFalse(rTrue),*b);
   ASSERT_EQ(x->topVar(rFalse),*a);
-  ASSERT_EQ(x->coFactorTrue(rFalse),2);
-  ASSERT_EQ(x->coFactorFalse(rFalse),1);
+  ASSERT_EQ(x->coFactorTrue(rFalse),x->True());
+  ASSERT_EQ(x->coFactorFalse(rFalse),x->False());
 }

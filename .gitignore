@@ -2,6 +2,12 @@
 /cmake-build-debug
 /include
 /lib
+/BOOST/*
+/cmake-build-debug
+/cmake-build-release
+/benchmarks
 
 /src/test/googletest
+/src/bench
+/src/verify
 /.idea
